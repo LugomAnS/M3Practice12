@@ -12,6 +12,7 @@ namespace M3Practice12.Models
     /// </summary>
     internal class Client
     {
+        /// <summary>Поле ID</summary>
         public static int ClientDBID { get; set; } = 0;
 
         public int Id { get; set; }
@@ -21,6 +22,11 @@ namespace M3Practice12.Models
 
         public Client() { }
 
+
+        /// <summary>
+        /// Получить следующий номер ID
+        /// </summary>
+        /// <returns>Следующее значение ID из БД</returns>
         public static int GetNextID() => ++ClientDBID;
 
     }
