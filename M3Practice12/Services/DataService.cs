@@ -26,7 +26,7 @@ namespace M3Practice12.Services
             string json = File.ReadAllText(CLIENTINFO_PATH);
 
             return JsonConvert.DeserializeObject<ObservableCollection<ClientInfo>>(json);
-        }j
+        }
 
         /// <summary>
         /// Запись информации на диск
