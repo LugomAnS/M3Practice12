@@ -31,7 +31,8 @@
                 <Button Content="Удалить"/>
             </StackPanel>
             <GroupBox Header="Список клиентов">
-                <ListBox ItemsSource="{Binding Clients}">
+                <ListBox ItemsSource="{Binding Clients}"
+                         SelectedItem="{Binding SelectedClientInfo}">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">
@@ -46,6 +47,56 @@
                 </ListBox>
             </GroupBox>
         </DockPanel>
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="0.7*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <GroupBox Grid.Column="0" Header="Накопительный счет"
+                          DataContext="{Binding SelectedClientInfo.SavingAccount}">
+                    <DockPanel >
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                            <Button Content="Открыть счет"/>
+                            <Button Content="Закрыть счет"/>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <TextBlock Text="Номер счета: "/>
+                            <TextBlock Text="Дата создания: " />
+                            <TextBlock Text="Баланс: " />
+                        </StackPanel>
+                        <StackPanel  Orientation="Vertical">
+                            <TextBlock Text="{Binding Number}" />
+                            <TextBlock Text="{Binding CreationDate}" />
+                            <TextBlock Text="{Binding DisplayBalance}" />
+                        </StackPanel>
+                    </DockPanel>
+                </GroupBox>
+                <GroupBox Grid.Column="1" Header="Депозитный счет"
+                          DataContext="{Binding SelectedClientInfo.DepositAccount}">
+                    <DockPanel >
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                            <Button Content="Открыть счет"/>
+                            <Button Content="Закрыть счет"/>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <TextBlock Text="Номер счета: "/>
+                            <TextBlock Text="Дата создания: " />
+                            <TextBlock Text="Баланс: " />
+                        </StackPanel>
+                        <StackPanel  Orientation="Vertical">
+                            <TextBlock Text="{Binding Number}" />
+                            <TextBlock Text="{Binding CreationDate}" />
+                            <TextBlock Text="{Binding DisplayBalance}" />
+                        </StackPanel>
+                    </DockPanel>
+                </GroupBox>
+            </Grid>
+        </Grid>
 
     </Grid>
 </Window>

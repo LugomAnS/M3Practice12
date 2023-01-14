@@ -8,6 +8,7 @@ namespace M3Practice12.Models.Accounts
 {
     internal class DepositAccount : AccountBase
     {
+        
 
         public DateTime ExpirationTime { get; set; }
 

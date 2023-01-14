@@ -25,6 +25,18 @@ namespace M3Practice12.ViewModels
 
         #endregion
 
+        #region Выбранный клиент
+
+        private ClientInfo _selectedClientInfo;
+
+        public ClientInfo SelectedClientInfo
+        {
+            get => _selectedClientInfo;
+            set => Set(ref _selectedClientInfo, value);
+        }
+
+        #endregion
+
         #endregion
         public MainWindowViewModel()
         {
