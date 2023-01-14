@@ -8,13 +8,24 @@ namespace M3Practice12.Models.Accounts
 {
     internal class DepositAccount : AccountBase
     {
-        
+        private double interestRate = 5.00;
+
+        public double InterestRate
+        {
+            get => interestRate;
+            set => interestRate = value;
+        }
 
         public DateTime ExpirationTime { get; set; }
 
         public DepositAccount()
         {
             CreationDate = DateTime.Now;
+            ExpirationTime = new DateTime(
+                DateTime.Now.Year,
+                DateTime.Now.Month + 3,
+                DateTime.Now.Day
+                );
         }
     }
 }

@@ -16,6 +16,11 @@
             <Setter Property="Margin" Value="3" />
             <Setter Property="Padding" Value="5"/>
         </Style>
+        <Style  TargetType="TextBlock">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="5" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
         
     </Window.Resources>
     <Grid>
@@ -87,11 +92,15 @@
                             <TextBlock Text="Номер счета: "/>
                             <TextBlock Text="Дата создания: " />
                             <TextBlock Text="Баланс: " />
+                            <TextBlock Text="Процентная ставка: " />
+                            <TextBlock Text="Дата завершения: " />
                         </StackPanel>
                         <StackPanel  Orientation="Vertical">
                             <TextBlock Text="{Binding Number}" />
                             <TextBlock Text="{Binding CreationDate}" />
                             <TextBlock Text="{Binding DisplayBalance}" />
+                            <TextBlock Text="{Binding InterestRate}" />
+                            <TextBlock Text="{Binding ExpirationTime}" />
                         </StackPanel>
                     </DockPanel>
                 </GroupBox>
