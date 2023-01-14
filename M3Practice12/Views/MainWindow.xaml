@@ -4,9 +4,34 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:M3Practice12"
+        xmlns:vm="clr-namespace:M3Practice12.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="Button" >
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+    </Window.Resources>
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.7*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <Button DockPanel.Dock="Top" Content="Получить тестовые данные"/>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Content="Добавить"/>
+                <Button Content="Удалить"/>
+            </StackPanel>
+            <GroupBox Header="Список клиентов">
+                <ListBox ItemsSource="{Binding Clients}"></ListBox>
+            </GroupBox>
+        </DockPanel>
 
     </Grid>
 </Window>
