@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:M3Practice12"
         xmlns:vm="clr-namespace:M3Practice12.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen">
     <Window.DataContext>
         <vm:MainWindowViewModel />
     </Window.DataContext>
@@ -15,6 +16,7 @@
             <Setter Property="Margin" Value="3" />
             <Setter Property="Padding" Value="5"/>
         </Style>
+        
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -22,14 +24,26 @@
             <ColumnDefinition Width="0.7*"/>
         </Grid.ColumnDefinitions>
         <DockPanel Grid.Column="0">
-            <Button DockPanel.Dock="Top" Content="Получить тестовые данные"/>
+            <Button DockPanel.Dock="Top" Content="Получить тестовые данные" Visibility="Collapsed"/>
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
                         HorizontalAlignment="Center">
                 <Button Content="Добавить"/>
                 <Button Content="Удалить"/>
             </StackPanel>
             <GroupBox Header="Список клиентов">
-                <ListBox ItemsSource="{Binding Clients}"></ListBox>
+                <ListBox ItemsSource="{Binding Clients}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding Client.Surname}" FontSize="14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Client.Name}" Margin="0,0,3,0"/>
+                                    <TextBlock Text="{Binding Client.Patronymic}" Margin="3,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
             </GroupBox>
         </DockPanel>
 
