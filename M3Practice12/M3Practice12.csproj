@@ -8,8 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Новая папка\" />
-    <Folder Include="Models\" />
     <Folder Include="Views\" />
   </ItemGroup>
 
