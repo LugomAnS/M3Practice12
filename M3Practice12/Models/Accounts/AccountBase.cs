@@ -9,7 +9,7 @@ namespace M3Practice12.Models.Accounts
     /// <summary>
     /// Базовая информация о счете
     /// </summary>
-    internal abstract class AccountBase
+    public abstract class AccountBase
     {
         /// <summary>Владелец счет</summary>
         public int ClientID { get; set; }

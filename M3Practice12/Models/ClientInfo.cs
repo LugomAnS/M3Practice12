@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace M3Practice12.Models
 {
-    internal class ClientInfo
+    public class ClientInfo
     {
         public Client Client { get; set; }
 

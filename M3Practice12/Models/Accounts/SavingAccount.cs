@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace M3Practice12.Models.Accounts
 {
-    internal class SavingAccount : AccountBase
+    public class SavingAccount : AccountBase
     {
         public SavingAccount() 
         {

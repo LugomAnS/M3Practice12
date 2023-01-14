@@ -10,7 +10,7 @@ namespace M3Practice12.Models
     /// <summary>
     /// Клиент банка
     /// </summary>
-    internal class Client
+    public class Client
     {
         /// <summary>Поле ID</summary>
         public static int ClientDBID { get; set; } = 0;
