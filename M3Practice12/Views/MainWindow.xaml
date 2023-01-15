@@ -39,7 +39,9 @@
                         HorizontalAlignment="Center">
                 <Button Content="Добавить"
                         Command="{Binding AddNewClientCommand}"/>
-                <Button Content="Удалить"/>
+                <Button Content="Удалить"
+                        Command="{Binding DeleteClientCommand}"
+                        CommandParameter="{Binding SelectedClientInfo}"/>
             </StackPanel>
             <GroupBox Header="Список клиентов">
                 <ListBox ItemsSource="{Binding Clients}"

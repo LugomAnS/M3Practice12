@@ -83,6 +83,8 @@ namespace M3Practice12.ViewModels
                                                           CanCancelSavingClientExecute);
             AddNewClientCommand = new LambdaCommand(OnAddNewClientCommandExecute, 
                                                     CanAddNewClientCommandExecute);
+            DeleteClientCommand = new LambdaCommand(OnDeleteClientCommandExecute,
+                                                    CanDeleteClientCommandExecute);
         }
 
         #region Команды
@@ -133,6 +135,19 @@ namespace M3Practice12.ViewModels
             WorkingWithAccount = Visibility.Visible;
         }
         private bool CanCancelSavingClientExecute(object p) => true;
+
+        #endregion
+
+        #region Удаление клиента
+        public ICommand DeleteClientCommand { get; }
+
+        private void OnDeleteClientCommandExecute(object p)
+        {
+            Clients.Remove(SelectedClientInfo);
+            DataService.WriteData(Clients);
+        }
+
+        private bool CanDeleteClientCommandExecute(object p) => p != null;
 
         #endregion
 
