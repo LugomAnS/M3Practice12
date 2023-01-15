@@ -71,30 +71,33 @@
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
                 <GroupBox Grid.Column="0" Header="Накопительный счет"
-                          DataContext="{Binding SelectedClientInfo.SavingAccount}">
+                          >
                     <DockPanel >
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
                             <Button Content="Открыть счет"/>
-                            <Button Content="Закрыть счет"/>
+                            <Button Content="Закрыть счет"
+                                    Command="{Binding ClosingAccountCommand}"
+                                    CommandParameter="{Binding SelectedClientInfo.SavingAccount}"/>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
                             <TextBlock Text="Номер счета: "/>
                             <TextBlock Text="Дата создания: " />
                             <TextBlock Text="Баланс: " />
                         </StackPanel>
-                        <StackPanel  Orientation="Vertical">
+                        <StackPanel  Orientation="Vertical" DataContext="{Binding SelectedClientInfo.SavingAccount}">
                             <TextBlock Text="{Binding Number}" />
                             <TextBlock Text="{Binding CreationDate}" />
                             <TextBlock Text="{Binding DisplayBalance}" />
                         </StackPanel>
                     </DockPanel>
                 </GroupBox>
-                <GroupBox Grid.Column="1" Header="Депозитный счет"
-                          DataContext="{Binding SelectedClientInfo.DepositAccount}">
+                <GroupBox Grid.Column="1" Header="Депозитный счет">
                     <DockPanel >
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
                             <Button Content="Открыть счет"/>
-                            <Button Content="Закрыть счет"/>
+                            <Button Content="Закрыть счет"
+                                    Command="{Binding ClosingAccountCommand}"
+                                    CommandParameter="{Binding SelectedClientInfo.DepositAccount}"/>
                         </StackPanel>
                         <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
                             <TextBlock Text="Номер счета: "/>
@@ -103,7 +106,7 @@
                             <TextBlock Text="Процентная ставка: " />
                             <TextBlock Text="Дата завершения: " />
                         </StackPanel>
-                        <StackPanel  Orientation="Vertical">
+                        <StackPanel  Orientation="Vertical" DataContext="{Binding SelectedClientInfo.DepositAccount}">
                             <TextBlock Text="{Binding Number}" />
                             <TextBlock Text="{Binding CreationDate}" />
                             <TextBlock Text="{Binding DisplayBalance}" />
@@ -138,8 +141,8 @@
                                     <DataTemplate>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock Text="{Binding Number}"/>
-                                            <TextBlock Text="Баланс счета: " Margin="5,0,0,0"/>
-                                            <TextBlock Text="{Binding Balance}" />
+                                            
+                                            <TextBlock Text="{Binding DisplayBalance}" Margin="5,0,0,0"/>
                                             
                                         </StackPanel>
                                     </DataTemplate>

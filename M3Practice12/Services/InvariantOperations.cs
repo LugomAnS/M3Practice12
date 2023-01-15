@@ -1,7 +1,7 @@
 ﻿using M3Practice12.Models;
 using M3Practice12.Models.Accounts;
 using System;
-
+using System.Windows;
 
 namespace M3Practice12.Services
 {
@@ -31,6 +31,12 @@ namespace M3Practice12.Services
         {
             fromAccount.Balance -= ammount;
             whereAccount.Balance += ammount;
+        }
+
+        public static void CloseAccount (ref T accountToClose)
+        {
+            MessageBox.Show("Операции по закрытию счета, переводу денег, отправка его в архив");
+            accountToClose = null;
         }
     }
 }

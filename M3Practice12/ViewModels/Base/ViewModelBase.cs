@@ -12,7 +12,7 @@ namespace M3Practice12.ViewModels.Base
     {
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        protected void OnPropertyChanger([CallerMemberName] string property = null)
+        protected void OnPropertyChanged([CallerMemberName] string property = null)
             => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
 
@@ -32,7 +32,7 @@ namespace M3Practice12.ViewModels.Base
             }
 
             field = value;
-            OnPropertyChanger(property);
+            OnPropertyChanged(property);
             return true;
         }
     }

@@ -17,5 +17,17 @@ namespace M3Practice12.Models
 
         public ClientInfo() { }
 
+        public void Delete<T>(T accountToDelete)
+        {
+            if (accountToDelete is SavingAccount)
+            {
+                SavingAccount = null;
+            }
+            if (accountToDelete is DepositAccount)
+            {
+                DepositAccount = null;
+            }
+        }
+
     }
 }

@@ -138,6 +138,8 @@ namespace M3Practice12.ViewModels
                                                           CanSelfAccountExhangeCommandExecute);
             ExchangeBalanceCommand = new LambdaCommand(OnExchangeBalanceCommandExecute,
                                                        CanExchangeBalanceCommandExecute);
+            ClosingAccountCommand = new LambdaCommand(OnClosingAccountCommandExecute,
+                                                      CanClosingAccountCommandExecute);
         }
 
         private void VisibilityReset()
@@ -206,6 +208,22 @@ namespace M3Practice12.ViewModels
         }
 
         private bool CanDeleteClientCommandExecute(object p) => p != null;
+
+        #endregion
+
+
+        #region Закрыть счет
+        public ICommand ClosingAccountCommand { get; }
+
+        private void OnClosingAccountCommandExecute(object p)
+        {
+            SelectedClientInfo.Delete<AccountBase>(p as AccountBase);
+
+            OnPropertyChanged(nameof(SelectedClientInfo));
+      
+        }
+
+        private bool CanClosingAccountCommandExecute(object p) => p is AccountBase;
 
         #endregion
 
