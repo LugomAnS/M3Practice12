@@ -113,6 +113,43 @@
                     </DockPanel>
                 </GroupBox>
             </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"/>
+                    <ColumnDefinition Width="0.7*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Button Content="Перевод между своими счетами"
+                            Command="{Binding SelfAccountExhangeCommand}"
+                            CommandParameter="{Binding SelectedClientInfo}"/>
+                </StackPanel>
+                <GroupBox Grid.Column="1" Header="Перевод между своими счетами" Visibility="{Binding ExchangeSelfAccount}">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="Введите сумму перевода"/>
+                            <TextBox Text="{Binding AmmountToWithdraw,UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                            <Button Content="Перевести"
+                                    Command="{Binding ExchangeBalanceCommand}"/>
+                        </StackPanel>
+                        <GroupBox Header="Выберите счет с которого переводить" >
+                            <ListBox ItemsSource="{Binding ClientAccounts, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding SelectedAccount}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}"/>
+                                            <TextBlock Text="Баланс счета: " Margin="5,0,0,0"/>
+                                            <TextBlock Text="{Binding Balance}" />
+                                            
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                    </DockPanel>
+                </GroupBox>
+                
+            </Grid>
         </Grid>
 
         <GroupBox Grid.Column="1" Visibility="{Binding AddingClient}"

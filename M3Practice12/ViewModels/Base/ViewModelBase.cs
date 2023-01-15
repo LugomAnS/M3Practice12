@@ -26,7 +26,7 @@ namespace M3Practice12.ViewModels.Base
         /// <returns>True если значение изменено, False - при оставлении текущего значения</returns>
         protected bool Set<T>(ref T field, T value, [CallerMemberName]string property=null)
         {
-            if (Equals(field,value))
+            if (Equals(field, value))
             {
                 return false;
             }

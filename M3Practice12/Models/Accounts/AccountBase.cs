@@ -18,7 +18,7 @@ namespace M3Practice12.Models.Accounts
         public string Number { get; set; }
 
         /// <summary>Баланс</summary>
-        public int Balance { get; set; }
+        public double Balance { get; set; }
 
         /// <summary>Форматированный вывод баланс</summary>
         public string DisplayBalance
