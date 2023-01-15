@@ -87,7 +87,7 @@
                         <StackPanel  Orientation="Vertical" DataContext="{Binding SelectedClientInfo.SavingAccount}">
                             <TextBlock Text="{Binding Number}" />
                             <TextBlock Text="{Binding CreationDate}" />
-                            <TextBlock Text="{Binding DisplayBalance}" />
+                            <TextBlock Text="{Binding DisplayBalance, UpdateSourceTrigger=PropertyChanged}" />
                         </StackPanel>
                     </DockPanel>
                 </GroupBox>
@@ -109,7 +109,7 @@
                         <StackPanel  Orientation="Vertical" DataContext="{Binding SelectedClientInfo.DepositAccount}">
                             <TextBlock Text="{Binding Number}" />
                             <TextBlock Text="{Binding CreationDate}" />
-                            <TextBlock Text="{Binding DisplayBalance}" />
+                            <TextBlock Text="{Binding DisplayBalance, UpdateSourceTrigger=PropertyChanged}" />
                             <TextBlock Text="{Binding InterestRate}" />
                             <TextBlock Text="{Binding ExpirationTime}" />
                         </StackPanel>

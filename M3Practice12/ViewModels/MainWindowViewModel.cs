@@ -220,6 +220,7 @@ namespace M3Practice12.ViewModels
             SelectedClientInfo.Delete<AccountBase>(p as AccountBase);
 
             OnPropertyChanged(nameof(SelectedClientInfo));
+            DataService.WriteData(Clients);
       
         }
 
@@ -251,10 +252,13 @@ namespace M3Practice12.ViewModels
 
         private void OnExchangeBalanceCommandExecute(object p)
         {
-            InvariantOperations<AccountBase>.Exchange(SelectedAccount,
-                                                      SelectedAccount is SavingAccount ? SelectedClientInfo.DepositAccount : SelectedClientInfo.SavingAccount,
-                                                      double.Parse(AmmountToWithdraw));
+            SelectedClientInfo.Exchange(SelectedAccount, double.Parse(AmmountToWithdraw));
+
             DataService.WriteData(Clients);
+
+            // Не получается обновить информацию 
+            OnPropertyChanged(nameof(SelectedClientInfo.SavingAccount.DisplayBalance));
+            OnPropertyChanged(nameof(SelectedClientInfo.DepositAccount.DisplayBalance));
 
             MessageBox.Show("Перевод завершен");
             ClientAccounts = new List<AccountBase>
@@ -266,7 +270,9 @@ namespace M3Practice12.ViewModels
 
         private bool CanExchangeBalanceCommandExecute(object p)
         {
-            if (SelectedAccount != null && double.TryParse(AmmountToWithdraw, out double test))
+            if (SelectedAccount != null 
+                && double.TryParse(AmmountToWithdraw, out double test)
+                && SelectedAccount.Balance >= test)
             {
                 return true;
             }
