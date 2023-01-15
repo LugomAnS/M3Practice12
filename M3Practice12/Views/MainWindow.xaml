@@ -21,6 +21,11 @@
             <Setter Property="Padding" Value="1" />
             <Setter Property="FontSize" Value="14" />
         </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
         
     </Window.Resources>
     <Grid>
@@ -32,7 +37,8 @@
             <Button DockPanel.Dock="Top" Content="Получить тестовые данные" Visibility="Collapsed"/>
             <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
                         HorizontalAlignment="Center">
-                <Button Content="Добавить"/>
+                <Button Content="Добавить"
+                        Command="{Binding AddNewClientCommand}"/>
                 <Button Content="Удалить"/>
             </StackPanel>
             <GroupBox Header="Список клиентов">
@@ -52,7 +58,7 @@
                 </ListBox>
             </GroupBox>
         </DockPanel>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Visibility="{Binding WorkingWithAccount}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*"/>
                 <RowDefinition Height="0.7*"/>
@@ -106,6 +112,32 @@
                 </GroupBox>
             </Grid>
         </Grid>
+
+        <GroupBox Grid.Column="1" Visibility="{Binding AddingClient}"
+                  Header="Добавление нового клиента"
+                  >
+            <DockPanel >
+                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
+                             HorizontalAlignment="Center">
+                    <Button Content="Сохранить"
+                            Command="{Binding SaveNewClientCommand}"
+                            CommandParameter="{Binding NewClient}"/>
+                    <Button Content="Отменить"
+                            Command="{Binding CancelSavingClientCommand}"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="Фамилия: "/>
+                    <TextBlock Text="Имя: "/>
+                    <TextBlock Text="Отчество: "/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Left" DataContext="{Binding NewClient}" >
+                    <TextBox Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+               
+            </DockPanel>
+        </GroupBox>
 
     </Grid>
 </Window>
