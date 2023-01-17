@@ -121,6 +121,18 @@ namespace M3Practice12.ViewModels
 
         #endregion
 
+        #region Выбранный счет
+
+        private AccountType _accountType;
+
+        public AccountType AccountType
+        {
+            get => _accountType;
+            set => Set(ref _accountType, value);
+        }
+
+        #endregion
+
         #endregion
         public MainWindowViewModel()
         {
@@ -140,6 +152,8 @@ namespace M3Practice12.ViewModels
                                                        CanExchangeBalanceCommandExecute);
             ClosingAccountCommand = new LambdaCommand(OnClosingAccountCommandExecute,
                                                       CanClosingAccountCommandExecute);
+            OpenNewAccountCommand = new LambdaCommand(OnOpenNewAccountExecute,
+                                                      CanOpenNewAccountExecute);
         }
 
         private void VisibilityReset()
@@ -225,6 +239,44 @@ namespace M3Practice12.ViewModels
         }
 
         private bool CanClosingAccountCommandExecute(object p) => p is AccountBase;
+
+        #endregion
+
+        #region Открыть счет
+        public ICommand OpenNewAccountCommand { get; }
+
+        private void OnOpenNewAccountExecute(object p)
+        {
+            if ((AccountType)p == AccountType.Saving)
+            {
+                SelectedClientInfo.OpenAccount( new SavingAccount() );
+            }
+
+            if ((AccountType)p == AccountType.Deposit)
+            {
+                SelectedClientInfo.OpenAccount(new DepositAccount());
+            }
+
+            OnPropertyChanged(nameof(SelectedClientInfo));
+            DataService.WriteData(Clients);
+        }
+
+        private bool CanOpenNewAccountExecute(object p)
+        {
+            if (p == null || SelectedClientInfo == null) return false;
+
+            if ((AccountType)p == AccountType.Deposit && SelectedClientInfo.DepositAccount == null)
+            {
+                return true;
+            }
+
+            if ((AccountType)p == AccountType.Saving && SelectedClientInfo.SavingAccount == null)
+            {
+                return true;
+            }
+
+            return false;
+        }    
 
         #endregion
 

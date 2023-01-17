@@ -8,7 +8,9 @@ namespace M3Practice12.Models
 {
     public enum AccountType
     {
+        None,
         Deposit,
         Saving
     }
-}
+
+ }

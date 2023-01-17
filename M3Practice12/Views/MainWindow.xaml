@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:M3Practice12"
         xmlns:vm="clr-namespace:M3Practice12.ViewModels"
+        xmlns:models="clr-namespace:M3Practice12.Models"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="800" Width="1200"
         WindowStartupLocation="CenterScreen">
@@ -26,6 +28,14 @@
             <Setter Property="Padding" Value="1" />
             <Setter Property="FontSize" Value="14"/>
         </Style>
+
+        <ObjectDataProvider x:Key="AccountTypeEnum"
+                            ObjectType="{x:Type sys:Enum}"
+                            MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:AccountType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
         
     </Window.Resources>
     <Grid>
@@ -63,6 +73,7 @@
         <Grid Grid.Column="1" Visibility="{Binding WorkingWithAccount}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="auto"/>
                 <RowDefinition Height="0.7*"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
@@ -70,11 +81,10 @@
                     <ColumnDefinition Width="0.5*"/>
                     <ColumnDefinition Width="0.5*"/>
                 </Grid.ColumnDefinitions>
-                <GroupBox Grid.Column="0" Header="Накопительный счет"
-                          >
+                <GroupBox Grid.Column="0" Header="Накопительный счет">
                     <DockPanel >
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                            <Button Content="Открыть счет"/>
+                            
                             <Button Content="Закрыть счет"
                                     Command="{Binding ClosingAccountCommand}"
                                     CommandParameter="{Binding SelectedClientInfo.SavingAccount}"/>
@@ -94,7 +104,7 @@
                 <GroupBox Grid.Column="1" Header="Депозитный счет">
                     <DockPanel >
                         <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
-                            <Button Content="Открыть счет"/>
+                           
                             <Button Content="Закрыть счет"
                                     Command="{Binding ClosingAccountCommand}"
                                     CommandParameter="{Binding SelectedClientInfo.DepositAccount}"/>
@@ -116,7 +126,15 @@
                     </DockPanel>
                 </GroupBox>
             </Grid>
-            <Grid Grid.Row="1">
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <ComboBox Margin="3" Padding="5"
+                          ItemsSource="{Binding Source={StaticResource AccountTypeEnum}}"
+                          SelectedItem ="{Binding AccountType}"></ComboBox>
+                <Button Content="Открыть счет"
+                        Command="{Binding OpenNewAccountCommand}"
+                        CommandParameter="{Binding AccountType}"/>
+            </StackPanel>
+            <Grid Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.3*"/>
                     <ColumnDefinition Width="0.7*"/>

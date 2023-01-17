@@ -35,6 +35,12 @@ namespace M3Practice12.Models
             }
         }
 
+        /// <summary>
+        /// Перевод между своими счетами
+        /// </summary>
+        /// <typeparam name="T">Счет</typeparam>
+        /// <param name="accountFrom">Счет с которого переводится</param>
+        /// <param name="ammountToWithDraw">Сумма перевода</param>
         public void Exchange<T>(T accountFrom, double ammountToWithDraw)
         {
             if (accountFrom is SavingAccount)
@@ -46,6 +52,25 @@ namespace M3Practice12.Models
             {
                 DepositAccount.Balance -= ammountToWithDraw;
                 SavingAccount.Balance += ammountToWithDraw;
+            }
+        }
+
+        public void OpenAccount<T>(T accountToOpen)
+        {
+            Random randomizer = new Random();
+
+            if (accountToOpen is SavingAccount s)
+            {
+                s.ClientID = Client.Id;
+                s.Number = randomizer.Next(1, 1000).ToString(); 
+                SavingAccount = s;
+            }
+
+            if (accountToOpen is DepositAccount d)
+            {
+                d.ClientID = Client.Id;
+                d.Number = randomizer.Next(1, 1000).ToString();
+                DepositAccount = d;
             }
         }
 
