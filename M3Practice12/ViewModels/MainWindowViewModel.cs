@@ -133,6 +133,51 @@ namespace M3Practice12.ViewModels
 
         #endregion
 
+        #region Свои счета для пополнения
+
+        private List<IAccountReplenishment<AccountBase>> _accountsToRefill = new List<IAccountReplenishment<AccountBase>>();
+
+        public List<IAccountReplenishment<AccountBase>> AccountsToRefill
+        {
+            get => _accountsToRefill;
+            set => Set(ref _accountsToRefill, value);
+        }
+
+        #endregion
+
+        #region Сумма для пополнения
+        private string _replenishmentAmmount;
+
+        public string ReplenishmentAmmount
+        {
+            get => _replenishmentAmmount;
+            set => Set(ref _replenishmentAmmount, value);
+        }
+
+        #endregion
+
+        #region Видимость пополнение своего счета
+        private Visibility _replehishmentVisibility = Visibility.Collapsed;
+
+        public Visibility ReplenishmentVisibility
+        {
+            get => _replehishmentVisibility;
+            set => Set(ref _replehishmentVisibility, value);
+        }
+        #endregion
+
+        #region Счет для пополнения
+
+        private IAccountReplenishment<AccountBase> _accountToReplenishment;
+
+        public IAccountReplenishment<AccountBase> AccountToReplenishment
+        {
+            get => _accountToReplenishment;
+            set => Set(ref _accountToReplenishment, value);
+        }
+
+        #endregion
+
         #endregion
         public MainWindowViewModel()
         {
@@ -146,19 +191,27 @@ namespace M3Practice12.ViewModels
                                                     CanAddNewClientCommandExecute);
             DeleteClientCommand = new LambdaCommand(OnDeleteClientCommandExecute,
                                                     CanDeleteClientCommandExecute);
+
             SelfAccountExhangeCommand = new LambdaCommand(OnSelfAccountExhangeCommandExecute,
                                                           CanSelfAccountExhangeCommandExecute);
             ExchangeBalanceCommand = new LambdaCommand(OnExchangeBalanceCommandExecute,
                                                        CanExchangeBalanceCommandExecute);
+
             ClosingAccountCommand = new LambdaCommand(OnClosingAccountCommandExecute,
                                                       CanClosingAccountCommandExecute);
             OpenNewAccountCommand = new LambdaCommand(OnOpenNewAccountExecute,
                                                       CanOpenNewAccountExecute);
+
+            ReplenishmentVisibilityCommand = new LambdaCommand(OnReplenishmentVisibilityCommandExecute,
+                                                               CanReplenishmentVisibilityCommandExecute);
+            ReplenishmentCommand = new LambdaCommand(OnReplehishmentCommandExecute,
+                                                     CanReplehishmentCommandExecute);
         }
 
         private void VisibilityReset()
         {
             ExchangeSelfAccount = Visibility.Collapsed;
+            ReplenishmentVisibility = Visibility.Collapsed;
         }
 
         #region Команды
@@ -281,12 +334,14 @@ namespace M3Practice12.ViewModels
         #endregion
 
 
-        #region Перевод между своими счетами
+        #region Вкладка перевод между своими счетами
 
         public ICommand SelfAccountExhangeCommand { get; }
 
         private void OnSelfAccountExhangeCommandExecute(object p)
         {
+            VisibilityReset();
+
             ExchangeSelfAccount = Visibility.Visible;
             ClientAccounts = new List<AccountBase>
             {
@@ -331,7 +386,57 @@ namespace M3Practice12.ViewModels
 
             return false;
         }
-           
+
+
+        #endregion
+
+        #region Вкладка пополнение счета
+        public ICommand ReplenishmentVisibilityCommand { get; }
+
+        private void OnReplenishmentVisibilityCommandExecute(object p)
+        {
+            VisibilityReset();
+            ReplenishmentVisibility = Visibility.Visible;
+            AccountsToRefill = new List<IAccountReplenishment<AccountBase>>
+            {
+                ((ClientInfo)p).SavingAccount,
+                ((ClientInfo)p).DepositAccount
+            };
+        }
+
+        private bool CanReplenishmentVisibilityCommandExecute(object p) => p != null;
+
+        #endregion
+
+        #region Выполнение пополнения
+        public ICommand ReplenishmentCommand { get; }
+
+        private void OnReplehishmentCommandExecute(object p)
+        {
+            AccountToReplenishment.ReplenishmentAccount(double.Parse(ReplenishmentAmmount));
+
+            DataService.WriteData(Clients);
+
+            MessageBox.Show("Пополнение выполнено");
+
+            AccountsToRefill = new List<IAccountReplenishment<AccountBase>>
+            {
+                SelectedClientInfo.SavingAccount,
+                SelectedClientInfo.DepositAccount
+            };
+        }
+
+        private bool CanReplehishmentCommandExecute(object p)
+        {
+            if (AccountToReplenishment != null
+                && double.TryParse(ReplenishmentAmmount, out double test)
+                && test > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
 
         #endregion
 

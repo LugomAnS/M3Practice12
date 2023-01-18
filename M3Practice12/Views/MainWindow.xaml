@@ -143,6 +143,9 @@
                     <Button Content="Перевод между своими счетами"
                             Command="{Binding SelfAccountExhangeCommand}"
                             CommandParameter="{Binding SelectedClientInfo}"/>
+                    <Button Content="Пополнение счета" 
+                            Command="{Binding ReplenishmentVisibilityCommand}"
+                            CommandParameter="{Binding SelectedClientInfo}"/>
                 </StackPanel>
                 <GroupBox Grid.Column="1" Header="Перевод между своими счетами" Visibility="{Binding ExchangeSelfAccount}">
                     <DockPanel>
@@ -162,6 +165,32 @@
                                             
                                             <TextBlock Text="{Binding DisplayBalance}" Margin="5,0,0,0"/>
                                             
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                    </DockPanel>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="Пополнение счета" Visibility="{Binding ReplenishmentVisibility}">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="Введите сумму для пополнения"/>
+                            <TextBox Text="{Binding ReplenishmentAmmount ,UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                            <Button Content="Пополнить"
+                                    Command="{Binding ReplenishmentCommand}"/>
+                        </StackPanel>
+                        <GroupBox Header="Выберите счет для пополнения" >
+                            <ListBox ItemsSource="{Binding AccountsToRefill, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding AccountToReplenishment}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}"/>
+
+                                            <TextBlock Text="{Binding DisplayBalance}" Margin="5,0,0,0"/>
+
                                         </StackPanel>
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
