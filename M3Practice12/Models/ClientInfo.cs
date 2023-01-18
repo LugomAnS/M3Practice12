@@ -55,6 +55,11 @@ namespace M3Practice12.Models
             }
         }
 
+        /// <summary>
+        /// Открытие счета
+        /// </summary>
+        /// <typeparam name="T">Наследник AccountBase</typeparam>
+        /// <param name="accountToOpen">Аккаунт для открытия</param>
         public void OpenAccount<T>(T accountToOpen)
         {
             Random randomizer = new Random();

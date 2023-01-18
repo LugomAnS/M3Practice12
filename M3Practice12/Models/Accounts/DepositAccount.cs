@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace M3Practice12.Models.Accounts
 {
-    internal class DepositAccount : AccountBase
+    internal class DepositAccount : AccountBase , IAccountReplenishment<DepositAccount>
     {
         private double interestRate = 5.00;
 
@@ -26,6 +26,11 @@ namespace M3Practice12.Models.Accounts
                 DateTime.Now.Month + 3,
                 DateTime.Now.Day
                 );
+        }
+
+        public void ReplenishmentAccount(double ammount)
+        {
+            Balance += ammount;
         }
     }
 }
