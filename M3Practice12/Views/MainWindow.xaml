@@ -146,6 +146,9 @@
                     <Button Content="Пополнение счета" 
                             Command="{Binding ReplenishmentVisibilityCommand}"
                             CommandParameter="{Binding SelectedClientInfo}"/>
+                    <Button Content="Перевод другому клиенту" 
+                            Command="{Binding TransactionVisibilityCommand}"
+                            CommandParameter="{Binding SelectedClientInfo}"/>
                 </StackPanel>
                 <GroupBox Grid.Column="1" Header="Перевод между своими счетами" Visibility="{Binding ExchangeSelfAccount}">
                     <DockPanel>
@@ -195,6 +198,46 @@
                                     </DataTemplate>
                                 </ListBox.ItemTemplate>
                             </ListBox>
+                        </GroupBox>
+                    </DockPanel>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="Перевод другому клиенту" Visibility="{Binding StorageVisibility}">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="Введите сумму для перевода"/>
+                            <TextBox Text="{Binding TransactionAmmount ,UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                            <Button Content="Перевести"
+                                    Command="{Binding TransactionCommand}"/>
+                        </StackPanel>
+                        <GroupBox DockPanel.Dock="Top" Header="Выберите счет для списания" >
+                            <ListBox ItemsSource="{Binding ClientAccounts, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding SelectedAccount}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}"/>
+
+                                            <TextBlock Text="{Binding DisplayBalance}" Margin="5,0,0,0"/>
+
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                        <GroupBox Header="Выберите счет куда перевести средства">
+                            <ListBox ItemsSource="{Binding AccountsStorage.AllAccounts, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding AccountTransaction}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                
+                            </ListBox>
+                            
                         </GroupBox>
                     </DockPanel>
                 </GroupBox>

@@ -178,6 +178,51 @@ namespace M3Practice12.ViewModels
 
         #endregion
 
+
+        #region Хранилище всех счетов
+        private AccountsStorage<AccountBase> _accountsStorage;
+
+        public AccountsStorage<AccountBase> AccountsStorage
+        {
+            get => _accountsStorage;
+            set => Set(ref _accountsStorage, value);
+        }
+
+        #endregion
+
+        #region Видимость перевода между счетами клиентов
+        private Visibility _storageVisibility = Visibility.Collapsed;
+        
+        public Visibility StorageVisibility
+        {
+            get => _storageVisibility;
+            set => Set(ref _storageVisibility, value);
+        }
+
+        #endregion
+
+        #region Сумма перевода другому клиенту
+
+        private string _transactionAmmount;
+
+        public string TransactionAmmount
+        {
+            get => _transactionAmmount;
+            set => Set(ref _transactionAmmount, value);
+        }
+
+        #endregion
+
+        #region Счет другого клиента для перевода
+        private AccountBase _accountTransaction;
+
+        public AccountBase AccountTransaction
+        {
+            get => _accountTransaction;
+            set => Set(ref _accountTransaction, value);
+        }
+        #endregion
+
         #endregion
         public MainWindowViewModel()
         {
@@ -206,12 +251,44 @@ namespace M3Practice12.ViewModels
                                                                CanReplenishmentVisibilityCommandExecute);
             ReplenishmentCommand = new LambdaCommand(OnReplehishmentCommandExecute,
                                                      CanReplehishmentCommandExecute);
+
+            TransactionVisibilityCommand = new LambdaCommand(OnTransactionVisibilityCommandExecute,
+                                                             CanTransactionVisibilityCommandExecute);
+            TransactionCommand = new LambdaCommand(OnTransactionCommandExecute,
+                                                   CanTransactionCommandExecute);
         }
 
+
+        /// <summary>
+        /// Сброс видимости режимов работы
+        /// </summary>
         private void VisibilityReset()
         {
             ExchangeSelfAccount = Visibility.Collapsed;
             ReplenishmentVisibility = Visibility.Collapsed;
+            StorageVisibility = Visibility.Collapsed;
+        }
+
+        /// <summary>
+        /// Наполнение хранилища всеми счетами других клиентов
+        /// </summary>
+        private void StorageFill()
+        {
+            AccountsStorage = new AccountsStorage<AccountBase>();
+            foreach (var item in Clients)
+            {
+                if (item.DepositAccount != null
+                    && SelectedClientInfo != item)
+                {
+                    AccountsStorage.AddValue = item.DepositAccount;
+                }
+                if (item.SavingAccount !=null
+                    && SelectedClientInfo != item)
+                {
+                    AccountsStorage.AddValue = item.SavingAccount;
+                }
+                
+            }
         }
 
         #region Команды
@@ -379,7 +456,8 @@ namespace M3Practice12.ViewModels
         {
             if (SelectedAccount != null 
                 && double.TryParse(AmmountToWithdraw, out double test)
-                && SelectedAccount.Balance >= test)
+                && SelectedAccount.Balance >= test
+                && test > 0)
             {
                 return true;
             }
@@ -389,6 +467,7 @@ namespace M3Practice12.ViewModels
 
 
         #endregion
+
 
         #region Вкладка пополнение счета
         public ICommand ReplenishmentVisibilityCommand { get; }
@@ -430,6 +509,62 @@ namespace M3Practice12.ViewModels
         {
             if (AccountToReplenishment != null
                 && double.TryParse(ReplenishmentAmmount, out double test)
+                && test > 0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+
+        #region Видимость вкладки перевода другому клиенту
+        public ICommand TransactionVisibilityCommand { get; }
+
+        private void OnTransactionVisibilityCommandExecute(object p)
+        {
+            VisibilityReset();
+            StorageFill();
+            StorageVisibility = Visibility.Visible;
+            
+            ClientAccounts = new List<AccountBase>();
+
+           // if (SelectedClientInfo.SavingAccount != null)
+            {
+                ClientAccounts.Add(SelectedClientInfo.SavingAccount); 
+            }
+
+           // if (SelectedClientInfo.DepositAccount != null)
+            { 
+                ClientAccounts.Add(SelectedClientInfo.DepositAccount);     
+            }
+        }
+
+        private bool CanTransactionVisibilityCommandExecute(object p) => p != null;
+
+        #endregion
+
+        #region Выполнение перевода
+        public ICommand TransactionCommand { get; }
+
+        private void OnTransactionCommandExecute(object p)
+        {
+            AccountsStorage.Transaction(SelectedAccount, AccountTransaction, double.Parse(TransactionAmmount));
+
+            DataService.WriteData(Clients);
+
+            StorageFill();
+
+            MessageBox.Show("Перевод осуществлен");
+        }
+
+        private bool CanTransactionCommandExecute(object p)
+        {
+            if (SelectedAccount != null
+                && double.TryParse(TransactionAmmount, out double test)
+                && SelectedAccount.Balance >= test
                 && test > 0)
             {
                 return true;
