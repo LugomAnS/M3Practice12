@@ -291,6 +291,24 @@ namespace M3Practice12.ViewModels
             }
         }
 
+        /// <summary>
+        /// обновление списка счетов клиента
+        /// </summary>
+        private void ClientAccountsRefresh()
+        {
+            ClientAccounts = new List<AccountBase>();
+
+            if (SelectedClientInfo.SavingAccount != null)
+            {
+                ClientAccounts.Add(SelectedClientInfo.SavingAccount);
+            }
+
+            if (SelectedClientInfo.DepositAccount != null)
+            {
+                ClientAccounts.Add(SelectedClientInfo.DepositAccount);
+            }
+        }
+
         #region Команды
 
         #region Добавить нового клиента
@@ -420,11 +438,8 @@ namespace M3Practice12.ViewModels
             VisibilityReset();
 
             ExchangeSelfAccount = Visibility.Visible;
-            ClientAccounts = new List<AccountBase>
-            {
-                SelectedClientInfo.SavingAccount,
-                SelectedClientInfo.DepositAccount
-            };
+
+            ClientAccountsRefresh();
         }
 
         private bool CanSelfAccountExhangeCommandExecute(object p) => p != null;
@@ -445,11 +460,8 @@ namespace M3Practice12.ViewModels
             OnPropertyChanged(nameof(SelectedClientInfo.DepositAccount.DisplayBalance));
 
             MessageBox.Show("Перевод завершен");
-            ClientAccounts = new List<AccountBase>
-            {
-                SelectedClientInfo.SavingAccount,
-                SelectedClientInfo.DepositAccount
-            };
+
+            ClientAccountsRefresh();
         }
 
         private bool CanExchangeBalanceCommandExecute(object p)
@@ -528,19 +540,11 @@ namespace M3Practice12.ViewModels
             VisibilityReset();
             StorageFill();
             StorageVisibility = Visibility.Visible;
-            
-            ClientAccounts = new List<AccountBase>();
 
-           // if (SelectedClientInfo.SavingAccount != null)
-            {
-                ClientAccounts.Add(SelectedClientInfo.SavingAccount); 
-            }
-
-           // if (SelectedClientInfo.DepositAccount != null)
-            { 
-                ClientAccounts.Add(SelectedClientInfo.DepositAccount);     
-            }
+            ClientAccountsRefresh();
         }
+
+        
 
         private bool CanTransactionVisibilityCommandExecute(object p) => p != null;
 
