@@ -79,9 +79,9 @@ namespace M3Practice12.ViewModels
 
         #region Счета клиента
 
-        private List<AccountBase> _clientAccount;
+        private ObservableCollection<AccountBase> _clientAccount;
 
-        public List<AccountBase> ClientAccounts 
+        public ObservableCollection<AccountBase> ClientAccounts 
         {
             get => _clientAccount;
             set => Set(ref _clientAccount, value);
@@ -296,17 +296,19 @@ namespace M3Practice12.ViewModels
         /// </summary>
         private void ClientAccountsRefresh()
         {
-            ClientAccounts = new List<AccountBase>();
+            ClientAccounts = new ObservableCollection<AccountBase>();
 
-            if (SelectedClientInfo.SavingAccount != null)
+           // if (SelectedClientInfo.SavingAccount != null)
             {
                 ClientAccounts.Add(SelectedClientInfo.SavingAccount);
             }
 
-            if (SelectedClientInfo.DepositAccount != null)
+           // if (SelectedClientInfo.DepositAccount != null)
             {
                 ClientAccounts.Add(SelectedClientInfo.DepositAccount);
             }
+
+            OnPropertyChanged("ClientAccounts");
         }
 
         #region Команды
