@@ -35,7 +35,7 @@ namespace M3Practice12.Services
                                  Id = client_index,
                                  Name = $"Имя {client_index}",
                                  Surname = $"Фамилия {client_index}",
-                                 Patronymic = $"Отчетсво {client_index}"
+                                 Patronymic = $"Отчество {client_index}"
                              },
                              SavingAccount = new SavingAccount
                              {
