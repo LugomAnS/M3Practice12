@@ -298,12 +298,12 @@ namespace M3Practice12.ViewModels
         {
             ClientAccounts = new ObservableCollection<AccountBase>();
 
-           // if (SelectedClientInfo.SavingAccount != null)
+            if (SelectedClientInfo.SavingAccount != null)
             {
                 ClientAccounts.Add(SelectedClientInfo.SavingAccount);
             }
 
-           // if (SelectedClientInfo.DepositAccount != null)
+            if (SelectedClientInfo.DepositAccount != null)
             {
                 ClientAccounts.Add(SelectedClientInfo.DepositAccount);
             }
