@@ -1,0 +1,275 @@
+﻿<Window x:Class="M3Practice12.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:M3Practice12"
+        xmlns:vm="clr-namespace:M3Practice12.ViewModels"
+        xmlns:models="clr-namespace:M3Practice12.Models"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1200"
+        WindowStartupLocation="CenterScreen">
+    <Window.DataContext>
+        <vm:MainWindowViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <Style TargetType="Button" >
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+        <Style  TargetType="TextBlock">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="Padding" Value="1" />
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <ObjectDataProvider x:Key="AccountTypeEnum"
+                            ObjectType="{x:Type sys:Enum}"
+                            MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="models:AccountType" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.3*"/>
+            <ColumnDefinition Width="0.7*"/>
+        </Grid.ColumnDefinitions>
+        <DockPanel Grid.Column="0">
+            <Button DockPanel.Dock="Top" Content="Получить тестовые данные" Visibility="Collapsed"/>
+            <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal"
+                        HorizontalAlignment="Center">
+                <Button Content="Добавить"
+                        Command="{Binding AddNewClientCommand}"/>
+                <Button Content="Удалить"
+                        Command="{Binding DeleteClientCommand}"
+                        CommandParameter="{Binding SelectedClientInfo}"/>
+            </StackPanel>
+            <GroupBox Header="Список клиентов">
+                <ListBox ItemsSource="{Binding Clients}"
+                         SelectedItem="{Binding SelectedClientInfo}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding Client.Surname}" FontSize="14"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Client.Name}" Margin="0,0,3,0"/>
+                                    <TextBlock Text="{Binding Client.Patronymic}" Margin="3,0,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </GroupBox>
+        </DockPanel>
+        <Grid Grid.Column="1" Visibility="{Binding WorkingWithAccount}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.3*"/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="0.7*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*"/>
+                    <ColumnDefinition Width="0.5*"/>
+                </Grid.ColumnDefinitions>
+                <GroupBox Grid.Column="0" Header="Накопительный счет">
+                    <DockPanel >
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                            
+                            <Button Content="Закрыть счет"
+                                    Command="{Binding ClosingAccountCommand}"
+                                    CommandParameter="{Binding SelectedClientInfo.SavingAccount}"/>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <TextBlock Text="Номер счета: "/>
+                            <TextBlock Text="Дата создания: " />
+                            <TextBlock Text="Баланс: " />
+                        </StackPanel>
+                        <StackPanel  Orientation="Vertical" DataContext="{Binding SelectedClientInfo.SavingAccount}">
+                            <TextBlock Text="{Binding Number}" />
+                            <TextBlock Text="{Binding CreationDate}" />
+                            <TextBlock Text="{Binding DisplayBalance, UpdateSourceTrigger=PropertyChanged}" />
+                        </StackPanel>
+                    </DockPanel>
+                </GroupBox>
+                <GroupBox Grid.Column="1" Header="Депозитный счет">
+                    <DockPanel >
+                        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal">
+                           
+                            <Button Content="Закрыть счет"
+                                    Command="{Binding ClosingAccountCommand}"
+                                    CommandParameter="{Binding SelectedClientInfo.DepositAccount}"/>
+                        </StackPanel>
+                        <StackPanel DockPanel.Dock="Left" Orientation="Vertical">
+                            <TextBlock Text="Номер счета: "/>
+                            <TextBlock Text="Дата создания: " />
+                            <TextBlock Text="Баланс: " />
+                            <TextBlock Text="Процентная ставка: " />
+                            <TextBlock Text="Дата завершения: " />
+                        </StackPanel>
+                        <StackPanel  Orientation="Vertical" DataContext="{Binding SelectedClientInfo.DepositAccount}">
+                            <TextBlock Text="{Binding Number}" />
+                            <TextBlock Text="{Binding CreationDate}" />
+                            <TextBlock Text="{Binding DisplayBalance, UpdateSourceTrigger=PropertyChanged}" />
+                            <TextBlock Text="{Binding InterestRate}" />
+                            <TextBlock Text="{Binding ExpirationTime}" />
+                        </StackPanel>
+                    </DockPanel>
+                </GroupBox>
+            </Grid>
+            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                <ComboBox Margin="3" Padding="5"
+                          ItemsSource="{Binding Source={StaticResource AccountTypeEnum}}"
+                          SelectedItem ="{Binding AccountType}"></ComboBox>
+                <Button Content="Открыть счет"
+                        Command="{Binding OpenNewAccountCommand}"
+                        CommandParameter="{Binding AccountType}"/>
+            </StackPanel>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.3*"/>
+                    <ColumnDefinition Width="0.7*"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <Button Content="Перевод между своими счетами"
+                            Command="{Binding SelfAccountExhangeCommand}"
+                            CommandParameter="{Binding SelectedClientInfo}"/>
+                    <Button Content="Пополнение счета" 
+                            Command="{Binding ReplenishmentVisibilityCommand}"
+                            CommandParameter="{Binding SelectedClientInfo}"/>
+                    <Button Content="Перевод другому клиенту" 
+                            Command="{Binding TransactionVisibilityCommand}"
+                            CommandParameter="{Binding SelectedClientInfo}"/>
+                </StackPanel>
+                <GroupBox Grid.Column="1" Header="Перевод между своими счетами" Visibility="{Binding ExchangeSelfAccount}">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="Введите сумму перевода"/>
+                            <TextBox Text="{Binding AmmountToWithdraw,UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                            <Button Content="Перевести"
+                                    Command="{Binding ExchangeBalanceCommand}"/>
+                        </StackPanel>
+                        <GroupBox Header="Выберите счет с которого переводить" >
+                            <ListBox ItemsSource="{Binding ClientAccounts, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding SelectedAccount}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}"/>
+                                            
+                                            <TextBlock Text="{Binding DisplayBalance}" Margin="5,0,0,0"/>
+                                            
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                    </DockPanel>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="Пополнение счета" Visibility="{Binding ReplenishmentVisibility}">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="Введите сумму для пополнения"/>
+                            <TextBox Text="{Binding ReplenishmentAmmount ,UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                            <Button Content="Пополнить"
+                                    Command="{Binding ReplenishmentCommand}"/>
+                        </StackPanel>
+                        <GroupBox Header="Выберите счет для пополнения" >
+                            <ListBox ItemsSource="{Binding AccountsToRefill, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding AccountToReplenishment}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}"/>
+
+                                            <TextBlock Text="{Binding DisplayBalance}" Margin="5,0,0,0"/>
+
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                    </DockPanel>
+                </GroupBox>
+
+                <GroupBox Grid.Column="1" Header="Перевод другому клиенту" Visibility="{Binding StorageVisibility}">
+                    <DockPanel>
+                        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal">
+                            <TextBlock Text="Введите сумму для перевода"/>
+                            <TextBox Text="{Binding TransactionAmmount ,UpdateSourceTrigger=PropertyChanged}" Width="120"/>
+                            <Button Content="Перевести"
+                                    Command="{Binding TransactionCommand}"/>
+                        </StackPanel>
+                        <GroupBox DockPanel.Dock="Top" Header="Выберите счет для списания" >
+                            <ListBox ItemsSource="{Binding ClientAccounts, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding SelectedAccount}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}"/>
+
+                                            <TextBlock Text="{Binding DisplayBalance}" Margin="5,0,0,0"/>
+
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                        </GroupBox>
+                        <GroupBox Header="Выберите счет куда перевести средства">
+                            <ListBox ItemsSource="{Binding AccountsStorage.AllAccounts, UpdateSourceTrigger=PropertyChanged}"
+                                     SelectedItem="{Binding AccountTransaction}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Number}" />
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                                
+                            </ListBox>
+                            
+                        </GroupBox>
+                    </DockPanel>
+                </GroupBox>
+                
+            </Grid>
+        </Grid>
+
+        <GroupBox Grid.Column="1" Visibility="{Binding AddingClient}"
+                  Header="Добавление нового клиента"
+                  >
+            <DockPanel >
+                 <StackPanel DockPanel.Dock="Top" Orientation="Horizontal"
+                             HorizontalAlignment="Center">
+                    <Button Content="Сохранить"
+                            Command="{Binding SaveNewClientCommand}"
+                            CommandParameter="{Binding NewClient}"/>
+                    <Button Content="Отменить"
+                            Command="{Binding CancelSavingClientCommand}"/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Left">
+                    <TextBlock Text="Фамилия: "/>
+                    <TextBlock Text="Имя: "/>
+                    <TextBlock Text="Отчество: "/>
+                </StackPanel>
+                <StackPanel DockPanel.Dock="Left" DataContext="{Binding NewClient}" >
+                    <TextBox Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Text="{Binding Patronymic, UpdateSourceTrigger=PropertyChanged}"/>
+                </StackPanel>
+               
+            </DockPanel>
+        </GroupBox>
+
+    </Grid>
+</Window>
