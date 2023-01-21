@@ -28,7 +28,7 @@ namespace M3Practice12.Models.Accounts
             set
             {
                 balance = value;
-                OnPropertyChanged("Balance");
+                OnPropertyChanged();
                 OnPropertyChanged("DisplayBalance");
             }
         }

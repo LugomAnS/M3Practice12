@@ -308,7 +308,7 @@ namespace M3Practice12.ViewModels
                 ClientAccounts.Add(SelectedClientInfo.DepositAccount);
             }
 
-            OnPropertyChanged("ClientAccounts");
+            OnPropertyChanged(nameof(ClientAccounts));
         }
 
         #region Команды
@@ -456,10 +456,6 @@ namespace M3Practice12.ViewModels
             SelectedClientInfo.Exchange(SelectedAccount, double.Parse(AmmountToWithdraw));
 
             DataService.WriteData(Clients);
-
-            // Не получается обновить информацию 
-            OnPropertyChanged(nameof(SelectedClientInfo.SavingAccount.DisplayBalance));
-            OnPropertyChanged(nameof(SelectedClientInfo.DepositAccount.DisplayBalance));
 
             MessageBox.Show("Перевод завершен");
 
